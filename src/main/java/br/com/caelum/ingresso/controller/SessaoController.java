@@ -41,7 +41,9 @@ public class SessaoController {
 		Sala sala = salaDao.findOne(salaId);
 		mav.addObject("sala", sala);
 		mav.addObject("filmes", filmeDao.findAll());
-		mav.addObject("formulario", formulario);
+		mav.addObject("form", formulario);
+		
+		
 		
 		return mav;
 	}
@@ -53,6 +55,7 @@ public class SessaoController {
 			return form(form.getSalaId(), form);
 		
 		Sessao sessao = form.toSessao(filmeDao, salaDao);
+		
 		sessaoDao.save(sessao);
 		
 		return new ModelAndView("redirect:/admin/sala/" + form.getSalaId() + "/sessoes");
