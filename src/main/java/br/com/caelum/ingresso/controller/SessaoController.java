@@ -4,14 +4,17 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.caelum.ingresso.dao.FilmeDao;
 import br.com.caelum.ingresso.dao.SalaDao;
 import br.com.caelum.ingresso.dao.SessaoDao;
+import br.com.caelum.ingresso.model.Sala;
 import br.com.caelum.ingresso.model.Sessao;
 import br.com.caelum.ingresso.model.form.SessaoForm;
 
@@ -20,6 +23,7 @@ public class SessaoController {
 
 	@Autowired
 	private SalaDao salaDao;
+	
 	@Autowired
 	private FilmeDao filmeDao;
 
@@ -27,20 +31,24 @@ public class SessaoController {
 	private SessaoDao sessaoDao;
 	
 	@GetMapping("/admin/sessao")
-	private ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm formulario) {
+	public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm formulario) {
 		
 		formulario.setSalaId(salaId);
 		
 		ModelAndView mav = new ModelAndView("sessao/sessao");
-
-		mav.addObject("sala", salaDao.findOne(salaId));
-		mav.addObject("filme", filmeDao.findAll());
+		System.out.println(salaId);
+		System.out.println(salaDao);
+		Sala sala = salaDao.findOne(salaId);
+		mav.addObject("sala", sala);
+		mav.addObject("filmes", filmeDao.findAll());
 		mav.addObject("formulario", formulario);
 		
 		return mav;
 	}
 	
-	private ModelAndView salva(@Valid SessaoForm form, BindingResult result) {
+	@PostMapping(value = "/admin/sessao")
+	@Transactional
+	public ModelAndView salva(@Valid SessaoForm form, BindingResult result) {
 		if(result.hasErrors()) 
 			return form(form.getSalaId(), form);
 		
