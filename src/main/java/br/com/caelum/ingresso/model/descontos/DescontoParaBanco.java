@@ -9,4 +9,9 @@ public class DescontoParaBanco implements Desconto{
 		return precoOriginal.multiply(new BigDecimal("0.7"));
 	}
 
+	@Override
+	public String getDescricao() {
+		return "Banco";
+	}
+
 }

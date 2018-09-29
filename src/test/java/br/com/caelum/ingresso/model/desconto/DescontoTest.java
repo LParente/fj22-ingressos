@@ -16,13 +16,13 @@ import br.com.caelum.ingresso.model.descontos.SemDesconto;
 public class DescontoTest {
 	@Test
 	public void naoDeveConcederDescontoParaIngressoComum(){
-		Sala sala = new Sala("Sala 3", new BigDecimal("15.00"));
-		Filme filme = new Filme("It", Duration.ofMinutes(150), "Terror", new BigDecimal("15.00"));
+		Sala sala = new Sala("Sala 3", new BigDecimal("10.00"));
+		Filme filme = new Filme("It", Duration.ofMinutes(150), "Terror", new BigDecimal("10.00"));
 		
 		Sessao sessao = new Sessao(LocalTime.parse("18:00:00"), filme, sala);
 		Ingresso ingresso = new Ingresso(sessao, new SemDesconto());
 		
-		BigDecimal precoEsperado = new BigDecimal("30.00");
+		BigDecimal precoEsperado = new BigDecimal("20.00");
 		
 		Assert.assertEquals(precoEsperado, ingresso.getPreco());
 		
