@@ -2,6 +2,7 @@ package br.com.caelum.ingresso.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.caelum.ingresso.dao.FilmeDao;
 import br.com.caelum.ingresso.dao.SalaDao;
 import br.com.caelum.ingresso.dao.SessaoDao;
+import br.com.caelum.ingresso.model.Filme;
 import br.com.caelum.ingresso.model.Sala;
 import br.com.caelum.ingresso.model.Sessao;
 import br.com.caelum.ingresso.model.form.SessaoForm;
@@ -33,6 +35,8 @@ public class SessaoController {
 	@Autowired
 	private SessaoDao sessaoDao;
 	
+	private EntityManager manager;
+	
 	@GetMapping("/admin/sessao")
 	public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm formulario) {
 		
@@ -46,10 +50,9 @@ public class SessaoController {
 		mav.addObject("filmes", filmeDao.findAll());
 		mav.addObject("form", formulario);
 		
-		
-		
 		return mav;
 	}
+	
 	
 	@PostMapping(value = "/admin/sessao")
 	@Transactional
