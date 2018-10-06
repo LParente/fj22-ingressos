@@ -18,6 +18,9 @@
 	<jpa:repositories base-package="br.com.caelum.ingresso" />
 
 	<context:component-scan base-package="br.com.caelum.ingresso" />
+	
+	<context:property-placeholder location="classpath:database-${profile:dev}.properties"/>
+	
 	<mvc:annotation-driven conversion-service="conversionService"/>
 	<mvc:default-servlet-handler/>
 
@@ -35,17 +38,29 @@
 		<property name="suffix" value=".jsp" />
 	</bean>
 
+<!-- 	<bean id="mysqlDS" class="org.apache.commons.dbcp.BasicDataSource"> -->
+<!-- 		<property name="username" value="root"/> -->
+<!-- 		<property name="password" value="caelum"/> -->
+<!-- 		<property name="url" value="jdbc:mysql://localhost/ingresso?createDatabaseIfNotExist=true"/> -->
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/> -->
+<!-- 	</bean> -->
+	
 	<bean id="mysqlDS" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="username" value="root"/>
-		<property name="password" value="caelum"/>
-		<property name="url" value="jdbc:mysql://localhost/ingresso?createDatabaseIfNotExist=true"/>
-		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="username" value="${db.username}"/>
+		<property name="password" value="${db.password}"/>
+		<property name="url" value="jdbc:${db.type}://${db.host}:${db.port}/${db.name}${db.extras}"/>
+		<property name="driverClassName" value="${db.driver.class}"/>
 	</bean>
 	
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="mysqlDS" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+        		<prop key="hibernate.dialect">${db.dialect}</prop>
+			</props>
 		</property>
 	</bean>
 	
