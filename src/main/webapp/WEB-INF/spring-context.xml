@@ -29,6 +29,7 @@
 		<property name="converters">
 			 <set merge="true">
 				 <bean class="br.com.caelum.ingresso.converter.YearMonthConverter"/>
+				 <bean class="br.com.caelum.ingresso.converter.LocalTimeConverter"/>
 			 </set>
 		 </property> 
 	</bean>
